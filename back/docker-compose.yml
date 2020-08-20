@@ -1,0 +1,29 @@
+version: "3.7"
+services:
+    database-desafio:
+        image: mongo:latest
+        container_name: database-mongo
+        ports:
+            - 27017:27017
+        command: --smallfiles
+    api-desafio:
+        build:
+            context: .
+            dockerfile: .Dockerfile
+        ports:
+            - 8080:8080
+        image: api_desafio:latest
+        container_name: api-desafio
+        depends_on:
+            - database-desafio
+        links:
+            - database-desafio
+    app:
+        build:
+            context: .
+            dockerfile: ../.Dockerfile
+        container_name: api-desafio
+        depends_on:
+            - api-desafio
+        ports:
+            - 80:80
